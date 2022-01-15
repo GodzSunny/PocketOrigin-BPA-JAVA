@@ -74,14 +74,40 @@ public class Creature {
         
     }
     
-    public void chooseMove() {
-        
+    public int chooseMove() {
+
+        return 1;
     }
-    
-    public void battle(Creature creature) {
-        if (creature.spdPoints > spdPoints) {
-            creature.chooseMove();
+
+    public boolean battle(Creature creature) {
+        if (!(creature.level < level - 30)) {
+            if (creature.spdPoints > spdPoints) {
+                int randomChoice = rNumber.nextInt(moveSet.size() - 1);
+                if (moves.namesOfMoves.contains(creature.moveSet.get(randomChoice))) {
+                    int movePower = moves.dmgOfMoves[moves.namesOfMoves.indexOf(creature.moveSet.get(randomChoice))];
+                    int damageDealt = ((((2*creature.level)/5 + 2) * movePower * (creature.atkPoints / defPoints)) / 50);
+                    currentHealthPoints -= damageDealt;
+                    if (currentHealthPoints == 0) {
+                        return false; 
+                    } else {
+                        int selectedMove = chooseMove();
+                        damageDealt = ((((2*level)/5 + 2) * moves.dmgOfMoves[selectedMove] * (atkPoints / creature.defPoints)) / 50);
+                        creature.currentHealthPoints -= damageDealt;
+                        if (creature.currentHealthPoints == 0) {
+                            return true;
+                        } else {
+                            battle(creature);
+                        }
+                    }
+                } else {
+                }
+            } else {
+            
+            }
+        } else {
+            return true;
         }
+        return true;
     }
-    
+
 }
