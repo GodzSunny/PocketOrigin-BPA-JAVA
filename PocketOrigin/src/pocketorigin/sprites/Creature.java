@@ -20,7 +20,6 @@ public class Creature {
     int atkPoints; 
     int defPoints; 
     int spdPoints;
-    int lukPoints;
     int currentHealthPoints;
     
     String species;
