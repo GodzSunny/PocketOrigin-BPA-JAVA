@@ -15,14 +15,21 @@ import pocketorigin.Moves;
  * @author Judah Stasinos
  */
 public class Creature {
-    int level;
-    int healthPoints, hpIV;
-    int atkPoints, atkIV;
-    int defPoints, defIV;
-    int spdPoints, spdIV;
-    int currentHealthPoints;
     
-    ArrayList<Moves> moveSet;
+    Moves moves = new Moves();
+    int level;
+    int healthPoints; 
+    final int hpIV;
+    int atkPoints; 
+    final int atkIV;
+    int defPoints; 
+    final int defIV;
+    int spdPoints;
+    final int spdIV;
+    int currentHealthPoints;
+    int experienceToLvl, currentExperience;
+    
+    ArrayList<String> moveSet;
     
     String type;
     String species;
@@ -37,14 +44,19 @@ public class Creature {
         atkIV = rNumber.nextInt(6);
         defIV = rNumber.nextInt(6);
         spdIV = rNumber.nextInt(6);
+        experienceToLvl = level;
+        currentExperience = 0;
         
-        healthPoints = 10*(level/5) + hpIV;
+        healthPoints = level + rNumber.nextInt(level) + hpIV;
+        atkPoints = level + rNumber.nextInt(level) + atkIV;
+        defPoints = level + rNumber.nextInt(level) +defIV;
+        spdPoints = level + rNumber.nextInt(level) + spdIV;
+        defPoints = level + rNumber.nextInt(level) + defIV;
+        
         
     }
     
     public Creature(String species) {
-        Moves moves = new Moves();
-        
         level = 5;
         this.species = species;
         
@@ -57,17 +69,19 @@ public class Creature {
         atkPoints = atkIV;
         defPoints = defIV;
         spdPoints = spdIV;
+        
+        moveSet.add(moves.namesOfMoves.get(0));
+        
     }
     
+    public void chooseMove() {
+        
+    }
     
-    /**
-     * int randomChance = rnumber.nextInt(10);
-     * if (randomChance <= 5) {
-     *      final String species = "Zombop";
-     *      Creature creature = new Creature(species, rNumber.nextInt(3) + 1);
-     * }
-     */
-    
-    
+    public void battle(Creature creature) {
+        if (creature.spdPoints > spdPoints) {
+            creature.chooseMove();
+        }
+    }
     
 }
