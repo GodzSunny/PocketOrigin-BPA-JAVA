@@ -21,7 +21,9 @@ public class Player {
     final String gender;
     final String name;
     
-    int vit, str, spd, inte, luk, level;
+    int vit, str, spd, luk, def, level;
+    int expToNextLvl, currentExp;
+    int healthPoints, currentHealthPoints;
     
     /**
      * Creates the new Player object
@@ -36,8 +38,11 @@ public class Player {
         vit = 10;
         str = 10;
         spd = 10;
-        inte = 10;
+        def = 10;
         luk = 10;
+        
+        healthPoints = (level * 5) + (vit * 10);
+        currentHealthPoints = healthPoints;
         
     }
 
@@ -49,8 +54,8 @@ public class Player {
         vit = 10;
         str = 10;
         spd = 10;
-        inte = 10;
-        luk = 10;
+        def = 10;
+        luk = 1;
     }
     
     /**
@@ -65,9 +70,66 @@ public class Player {
      * Adds a quantity of money to the Player's money
      * @param money the new value of money you want to add to the Player's money
      */
-    public void setMoney(int money) {
+    public void addMoney(int money) {
         this.money = this.money + money;
     }
     
+    /**
+    * Your player dealing damage to the creature.
+    * @param the creature you are dealing damage to.
+    */
+    public void attack(Creature creature) {
+        int damageDealt = atk * level - creature.defPoints;
+        int critChance;
+        if (luk < 30) {
+            critChance = rNumber.nextInt(30 - luk);
+        } else {
+            critChance = 1;
+        }
+        if (critChance <= 1) {
+            damageDealt *= 2;
+            //TODO: crit Message
+            creature.currentHealthPoints -= damageDealt
+        }
+    }
     
+    /**
+    * Makes your player battle a creature.
+    * @param the creature you will battle.
+    */
+    public void battle(Creature creature) {
+        if (spd < creature.spdPoints) {
+            int damageDealt = creature.atkPoints - (def * 2);
+            currentHealthPoints -= damageDealt;
+            //TODO: show damage dealt?
+            if (currentHealthPoints <= 0) {
+                //TODO: enter Lose State
+            } else {
+                attack(creature);
+                //TODO: show damage dealt?
+                if (creature.healthPoints <= 0) {
+                    creature.healthPoints = 0;
+                    //TODO: enter Win State
+                } else {
+                    battle(creature);
+                }
+            }
+        } else {
+            attack(creature);
+            if (creature.healthPoints <= 0) {
+                creature.healthPoints = 0;
+                //TODO: show damage dealt?
+                //TODO: enter Win State
+            } else {
+                int damageDealt = creature.atkPoints - (def * 2);
+                currentHealthPoints -= damageDealt;
+                //TODO: show damage dealt?
+                if (currentHealthPoints <= 0) {
+                    //TODO: enter Lose State
+                } else {
+                    battle(creature);
+                }
+            }
+        }
+    }
 }
