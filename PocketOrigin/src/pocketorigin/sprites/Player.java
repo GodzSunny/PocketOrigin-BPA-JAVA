@@ -79,7 +79,7 @@ public class Player {
     * @param the creature you are dealing damage to.
     */
     public void attack(Creature creature) {
-        int damageDealt = atk * level - creature.defPoints;
+        int damageDealt = str * level - creature.defPoints;
         int critChance;
         if (luk < 30) {
             critChance = rNumber.nextInt(30 - luk);
@@ -89,7 +89,7 @@ public class Player {
         if (critChance <= 1) {
             damageDealt *= 2;
             //TODO: crit Message
-            creature.currentHealthPoints -= damageDealt
+            creature.currentHealthPoints -= damageDealt;
         }
     }
     
